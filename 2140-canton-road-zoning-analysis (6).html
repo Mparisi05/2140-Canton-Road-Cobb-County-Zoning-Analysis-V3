@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoning Analysis | 2140 Canton Road, Marietta, GA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --charcoal: #25282a;
+            --slate: #5b6770;
+            --light-gray: #c1c6c8;
+            --blue: #0057b8;
+            --white: #ffffff;
+            --off-white: #f8f9fa;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Karla', sans-serif; color: var(--charcoal); line-height: 1.6; background: var(--off-white); }
+        .header { background: var(--charcoal); color: var(--white); padding: 40px 24px; }
+        .header-content { max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; }
+        .header-text { flex: 1; }
+        .header-logo { width: 140px; height: auto; flex-shrink: 0; margin-left: 24px; }
+        .header-logo svg { width: 100%; height: auto; }
+        .header-logo .logo-dark { fill: #ffffff; }
+        .header-logo .logo-blue { fill: var(--blue); }
+        .header-label { font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--light-gray); margin-bottom: 8px; }
+        .header h1 { font-size: 32px; font-weight: 700; margin-bottom: 8px; line-height: 1.2; }
+        .header-address { font-size: 18px; color: var(--light-gray); }
+        .stats-bar { background: var(--blue); color: var(--white); padding: 24px; }
+        .top-disclaimer { background: #f5e6c8; padding: 20px 24px; }
+        .top-disclaimer-content { max-width: 1000px; margin: 0 auto; }
+        .top-disclaimer-title { font-size: 12px; font-weight: 700; color: #8b0000; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .top-disclaimer-text { font-size: 13px; color: var(--charcoal); line-height: 1.6; }
+        .top-disclaimer-text a { color: var(--charcoal); }
+        .toc { background: var(--white); border-radius: 8px; padding: 32px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .toc-title { font-size: 20px; font-weight: 700; color: var(--charcoal); margin-bottom: 20px; }
+        .toc-list { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(4, auto); grid-auto-flow: column; gap: 12px 32px; }
+        .toc-item { display: flex; align-items: center; }
+        .toc-number { display: inline-flex; align-items: center; justify-content: center; background: var(--blue); color: var(--white); width: 24px; height: 24px; border-radius: 50%; font-size: 12px; font-weight: 600; margin-right: 12px; flex-shrink: 0; }
+        .toc-link { color: var(--charcoal); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+        .toc-link:hover { color: var(--blue); }
+        .stats-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+        .stat-item { text-align: center; }
+        .stat-value { font-size: 24px; font-weight: 700; }
+        .stat-label { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; }
+        .main { max-width: 1000px; margin: 0 auto; padding: 40px 24px; }
+        .section { background: var(--white); border-radius: 8px; padding: 32px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .section-number { display: inline-block; background: var(--blue); color: var(--white); width: 28px; height: 28px; border-radius: 50%; text-align: center; line-height: 28px; font-size: 14px; font-weight: 600; margin-right: 12px; }
+        .section-title { font-size: 20px; font-weight: 700; color: var(--charcoal); margin-bottom: 20px; display: flex; align-items: center; }
+        .section-title span { flex: 1; }
+        .key-finding { background: linear-gradient(135deg, var(--blue) 0%, #004494 100%); color: var(--white); padding: 20px 24px; border-radius: 6px; margin-top: 20px; }
+        .key-finding-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; opacity: 0.9; }
+        .key-finding-text { font-size: 16px; font-weight: 500; }
+        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .info-item { padding: 16px; background: var(--off-white); border-radius: 6px; }
+        .info-label { font-size: 12px; font-weight: 600; color: var(--slate); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .info-value { font-size: 16px; font-weight: 600; color: var(--charcoal); }
+        .info-value.highlight { color: var(--blue); }
+        .building-card { background: var(--off-white); border-radius: 6px; padding: 20px; margin-bottom: 12px; }
+        .building-card:last-child { margin-bottom: 0; }
+        .building-name { font-weight: 700; font-size: 16px; margin-bottom: 8px; color: var(--charcoal); }
+        .building-size { color: var(--blue); font-weight: 600; }
+        .building-breakdown { font-size: 14px; color: var(--slate); margin-top: 8px; }
+        .rules-list { list-style: none; }
+        .rules-list li { padding: 12px 0; border-bottom: 1px solid var(--light-gray); display: flex; align-items: flex-start; }
+        .rules-list li:last-child { border-bottom: none; }
+        .rule-icon { width: 20px; height: 20px; margin-right: 12px; flex-shrink: 0; margin-top: 2px; }
+        .rule-content strong { color: var(--charcoal); }
+        .pathway-grid { display: grid; gap: 12px; }
+        .pathway-card { display: flex; align-items: center; padding: 16px 20px; background: var(--off-white); border-radius: 6px; border-left: 4px solid var(--blue); }
+        .pathway-text { flex: 1; }
+        .pathway-text strong { display: block; margin-bottom: 2px; }
+        .pathway-text span { font-size: 14px; color: var(--slate); }
+        .risk-badge { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .risk-low { background: #d4edda; color: #155724; }
+        .risk-medium { background: #fff3cd; color: #856404; }
+        .district-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+        .district-tag { padding: 8px 14px; background: var(--off-white); border-radius: 4px; font-size: 13px; font-weight: 600; }
+        .district-tag.compatible { background: #d4edda; color: #155724; }
+        .district-tag.incompatible { background: #f8d7da; color: #721c24; }
+        .district-tag.recommended { background: var(--blue); color: var(--white); }
+        .compliance-table { width: 100%; border-collapse: collapse; }
+        .compliance-table th { text-align: left; padding: 12px 16px; background: var(--charcoal); color: var(--white); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .compliance-table td { padding: 14px 16px; border-bottom: 1px solid var(--light-gray); }
+        .compliance-table tr:last-child td { border-bottom: none; }
+        .compliance-table .check { color: #28a745; font-weight: 700; }
+        .use-card { display: flex; align-items: center; padding: 16px 20px; background: var(--off-white); border-radius: 6px; margin-bottom: 10px; }
+        .use-rank { width: 32px; height: 32px; background: var(--blue); color: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-right: 16px; flex-shrink: 0; }
+        .use-info { flex: 1; }
+        .use-name { font-weight: 700; margin-bottom: 2px; }
+        .use-note { font-size: 13px; color: var(--slate); }
+        .use-rating { color: #f4c430; font-size: 14px; letter-spacing: 2px; }
+        .prohibited-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+        .prohibited-item { display: flex; align-items: center; padding: 10px 14px; background: #fff5f5; border-radius: 4px; font-size: 14px; }
+        .prohibited-icon { color: #dc3545; margin-right: 8px; font-weight: 700; }
+        .timeline { position: relative; padding-left: 32px; }
+        .timeline::before { content: ''; position: absolute; left: 11px; top: 8px; bottom: 8px; width: 2px; background: var(--light-gray); }
+        .timeline-item { position: relative; padding-bottom: 20px; }
+        .timeline-item:last-child { padding-bottom: 0; }
+        .timeline-dot { position: absolute; left: -32px; top: 4px; width: 24px; height: 24px; background: var(--blue); border-radius: 50%; color: var(--white); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+        .timeline-content strong { display: block; margin-bottom: 2px; }
+        .timeline-content span { font-size: 14px; color: var(--slate); }
+        .fees-box { background: var(--off-white); border-radius: 6px; padding: 20px; margin-top: 24px; }
+        .fees-title { font-weight: 700; margin-bottom: 12px; }
+        .fee-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--light-gray); }
+        .fee-row:last-child { border-bottom: none; }
+        .fee-row.total { font-weight: 700; border-top: 2px solid var(--charcoal); margin-top: 8px; padding-top: 12px; }
+        .alert-box { background: #e7f3ff; border-left: 4px solid var(--blue); padding: 16px 20px; border-radius: 0 6px 6px 0; margin-top: 20px; }
+        .alert-title { font-weight: 700; margin-bottom: 4px; color: var(--blue); }
+        .alert-text { font-size: 14px; color: var(--slate); }
+        .resource-list { list-style: none; }
+        .resource-list li { padding: 12px 0; border-bottom: 1px solid var(--light-gray); }
+        .resource-list li:last-child { border-bottom: none; }
+        .resource-list a { color: var(--blue); text-decoration: none; font-weight: 600; }
+        .resource-list a:hover { text-decoration: underline; }
+        .resource-list span { display: block; font-size: 13px; color: var(--slate); margin-top: 2px; }
+        .parking-box { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
+        .parking-stat { text-align: center; padding: 20px; background: var(--off-white); border-radius: 6px; }
+        .parking-stat.surplus { background: #d4edda; }
+        .parking-number { font-size: 32px; font-weight: 700; color: var(--charcoal); }
+        .parking-stat.surplus .parking-number { color: #155724; }
+        .parking-label { font-size: 12px; color: var(--slate); text-transform: uppercase; letter-spacing: 0.5px; }
+        .footer { background: var(--charcoal); color: var(--white); padding: 32px 24px; text-align: center; }
+        .footer-logo { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+        .footer-prepared { font-size: 14px; color: var(--light-gray); }
+        .prepared-by { max-width: 1000px; margin: 0 auto; padding: 0 24px 24px; }
+        .prepared-box { background: var(--white); border-radius: 8px; padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        .prepared-info { }
+        .prepared-name { font-size: 18px; font-weight: 700; color: var(--charcoal); }
+        .prepared-title { font-size: 14px; color: var(--slate); }
+        .prepared-firm { font-size: 14px; font-weight: 600; color: var(--blue); }
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .info-grid { grid-template-columns: 1fr; }
+            .prohibited-grid { grid-template-columns: 1fr; }
+            .header h1 { font-size: 24px; }
+            .parking-box { grid-template-columns: 1fr; }
+            .header-content { flex-direction: column; }
+            .header-logo { width: 120px; margin-left: 0; margin-top: 20px; }
+            .toc-list { grid-template-columns: 1fr; }
+        }
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-text">
+                <div class="header-label">Zoning Analysis</div>
+                <h1>2140 Canton Road</h1>
+                <div class="header-address">Marietta, GA 30067 • Unincorporated Cobb County</div>
+            </div>
+            <div class="header-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 335.78 202.22">
+                    <style>.logo-dark{fill:#ffffff}.logo-blue{fill:#0057b8}</style>
+                    <g>
+                        <path class="logo-dark" d="M58.69,85.64c-.83-.55-.03-1.55.36-1.99l2.15-2.44c.31-.35,5.8-6.43,4.65-6.6-.37-.15-1.22-.03-1.68.15l-5.37,2.11c-3.06,1.2-5.89,2.92-8.5,4.92-.6.46-.78,1.34-1.49,1.73-.35.19-.12.88-.34,1.15-.31.38-1.31.99-1.83.76-1-.43-.59-1.93.13-2.57,2.93-2.6,6.2-4.49,9.7-6.33,2.91-1.53,6.02-2.5,9.17-3.43.53-.15,1.28.13,1.52.4,1.1,1.25-1.17,4-2.11,5.12l-3.05,3.62c.57.39.75-.16,1.08-.33,2.29-1.2,4.3-2.68,6.52-4.02,2.44-1.47,4.84-2.82,7.38-4.13.41-.21.8.54,1.11.72l-3.9,5.1c-1.6,2.09-3.27,4.06-4.51,6.46.7.36,1.25-.13,1.83-.49l9.27-5.79c1.22-.76,2.35-1.49,3.58-2.22l8.42-5.02c.94-.56,5.72-3.9,5.82-3.91.38-.02,1.14.05,1.28.63s-.5,1.15-.95,1.41l-6.85,3.96c-4.15,2.4-7.61,5.57-10.76,9.24l-.76.89c-2.13,2.48-3.74,5.33-5.24,8.24-.86,1.66-1.29,3.68-.85,5.45s1.81,2.98,3.14,3.91c3.7,2.58,11.61,2.72,16.09,1.84,4.72-.93,9.25-2.4,13.7-4.15.24-.09.31.31.31.44,0,.27-.2.43-.5.57l-3.28,1.51c-7.77,3.58-26.53,6.48-30.62-3.36-.75-1.8-.27-4.16.53-5.95,1.73-3.83,4.12-7.2,6.62-10.52.64-.85,1.7-1.24,2-2.48l-10.72,6.65c-.75.47-2.25,1.24-2.97.5-.82-.84-.1-2.54.52-3.37l4.39-5.96c.38-.52,1.21-.85.97-1.69-2.38,1.35-4.53,2.54-6.64,3.92l-7.29,4.75c-.46.3-1.53.92-2.03.58Z"/>
+                        <path class="logo-dark" d="M86.33,92.49c-.57-1.86,3.08-3.62,4.32-4.38,1.4-.87,6.37-3,7.1,0,1.21-.56,1.58-1.86,2.34-1.81.24.02.72.34.68.67-.21,1.51-3.65,3.75-3.99,6.05,2.33-.3,4.25-1.4,6.21-2.35l4.22-2.06c3.14-1.53,6.14-3.15,8.94-5.25.33-.25.71-.57,1.04-.63s1.21.31.94.76c-1.64,2.71-5.49,2.92-8.72,7.28-.37.5-.85,1.01-.36,1.72l5.65-3.14c3.3-1.83,6.38-3.86,9.02-6.59.28-.29.66-.55,1.02-.35.99.54-.92,2.6-1.52,3.23-2.91,3.06-1.33,4.51-2.03,4.98-.25.16-.82.6-1.07.28-.37-.47-.61-.92-.99-1.33.71-.58,1.23-1.41,1.16-2.34-3.57,2.43-6.95,4.56-10.65,6.34-.57.28-1.3.2-1.73-.06-.57-.34-.58-1.08-.53-1.8.07-.93.95-1.26,1.28-2.37l-9.16,4.37c-.7.34-3.08,1.03-3.92.19-.74-.73.61-2.4.32-3.12-1.82.87-8.64,4.74-9.57,1.7ZM95.81,89.03c-1.39-.79-7.47,1.02-8.05,2.89.7,1.22,7.67-1.97,8.05-2.89Z"/>
+                        <path class="logo-dark" d="M110.25,80.64c-1.56.22-2.98,0-4.3.56l-3.02,1.29c-.65.28-1.51-1.18-1.2-1.75.37-.69,1.29-.09,1.75-.31,1.5-.72,2.93-.51,4.47-.74l12.05-1.81,5.16-.68c2.61-.34,5.14-.53,7.77-.75l4.73-.39,12.26-.56c6.09-.28,12.04.17,18.2,1.19-2.96,1.06-5.74.23-8.59.19-4.44-.07-8.75-.27-13.15.01l-8.94.57c-1.8.11-3.5.27-5.28.43l-5.57.48-5.33.72-11.01,1.55Z"/>
+                    </g>
+                    <g>
+                        <path class="logo-dark" d="M106.97,122.77l-1.86.04-3.53-3.65-3.46.03-.02,3.58c-.5.09-.98.08-1.56.01v-10s6.18-.02,6.18-.02c1.08,0,2.08.41,2.95.99.73.57,1,1.4.98,2.3-.05,2.01-1.5,2.56-3.23,3.05l3.55,3.66ZM105.08,115.88c-.11-1.87-2.26-1.93-3.74-1.92l-3.23.04.04,3.95h4.15c1.42-.02,2.88-.54,2.79-2.07Z"/>
+                        <path class="logo-dark" d="M132.58,121.47c-1.72,2.31-7.3,1.85-9.5.12.25-.38.47-.68.8-1.05,1.53,1.31,5.27,1.77,6.97.7.42-.27.68-.66.67-1.11-.07-2.71-7.37-.8-8.05-4.19-.21-1.02.22-1.96,1.08-2.52,2.18-1.41,5.99-1.19,8.03.31-.35.31-.5.65-.76.99-1.29-.85-2.78-1.1-4.3-.92-.84.1-2.67.24-2.56,1.69.15,1.87,4.18,1.16,6.75,2.47,1.3.66,1.76,2.31.87,3.5Z"/>
+                        <path class="logo-dark" d="M68.17,119.53l-4.01.02.02,3.24c-.54.07-1.04.09-1.57.01v-10.04s5.35-.01,5.35-.01c1.39,0,2.69.33,3.8,1.18,1.17,1.17,1.18,3.21-.06,4.35-.93.86-2.21,1.24-3.52,1.25ZM71.01,115.9c-.16-1.43-1.64-1.92-2.93-1.92h-3.95s.04,4.34.04,4.34h4.01c1.35,0,3.01-.77,2.83-2.42Z"/>
+                        <path class="logo-dark" d="M88.34,122.82l-1.46-2.6h-6.45s-1.44,2.6-1.44,2.6c-.51.03-.97.04-1.59-.02l5.52-10.04c.56-.05,1.03-.05,1.58,0l2.4,4.44,3.11,5.62-1.67.02ZM86.28,119.04l-2.6-4.83-2.63,4.86,5.23-.03Z"/>
+                        <path class="logo-dark" d="M115.71,122.76c-.53.08-1,.1-1.59.06l.03-10.03,1.56-.07v10.04Z"/>
+                        <path class="logo-dark" d="M141.83,116.57l.03,6.18c-.51.13-1.03.08-1.58.04l.03-9.97c.48-.08.97-.06,1.49-.03.15,1.25.02,2.49.03,3.79Z"/>
+                    </g>
+                    <line style="fill:none;stroke:#ffffff;stroke-miterlimit:10;stroke-width:.5px" x1="177.75" y1="68.61" x2="177.75" y2="123.05"/>
+                    <path class="logo-blue" d="M223.84,92.13h20.28v-24.2h-20.28v24.2ZM230.1,90.88h-2.55c1.25-1.13,2.06-2.95,2.06-5.01v-7.23c0-2.05-.81-3.86-2.06-5h2s.55,0,.55,0c.55,0,1.08.09,1.58.26,0,.1-.02.2-.02.3v7.24c0,2.39,1.35,4.46,3.33,5.51-.49,2.25-2.49,3.95-4.89,3.95M228.39,78.64v7.23c0,.19,0,.37-.03.55h-3.3v-12.74c1.88.33,3.33,2.42,3.33,4.96M225.06,90.83v-3.18h3.07c-.49,1.69-1.66,2.94-3.07,3.18M232.88,81.43v-6.95c1.34.9,2.23,2.43,2.23,4.16v6.95c-1.34-.9-2.23-2.43-2.23-4.16M232.99,73.13c.49-2.25,2.49-3.95,4.89-3.95h2.55c-1.25,1.14-2.06,2.95-2.06,5.01v7.24c0,2.05.81,3.86,2.06,5h-1.36s-1.18,0-1.18,0c-.55,0-1.08-.09-1.58-.26,0-.1.02-.2.02-.3v-7.23c0-2.39-1.35-4.46-3.33-5.51M239.59,81.43v-7.24c0-.19,0-.37.03-.55h3.29v12.74c-1.87-.33-3.31-2.43-3.31-4.95M242.91,72.42h-3.06c.49-1.68,1.65-2.93,3.06-3.18v3.18ZM234.2,69.18c-1.14.84-1.99,2.07-2.35,3.48-.56-.16-1.15-.26-1.76-.26h-4.76s-.28,0-.28,0v-3.23h9.14ZM233.78,90.88c1.14-.84,1.99-2.07,2.35-3.48.56.17,1.15.26,1.76.26h5.02v3.23h-9.12Z"/>
+                    <path class="logo-blue" d="M196.06,121.24l.68,1.52h-.67l-.67-1.43h-1.06v1.43h-.64v-3.71h1.79c.79,0,1.25.4,1.25,1.07v.14c0,.49-.24.83-.68.98M196.09,120.09c0-.29-.19-.45-.57-.45h-1.18v1.08h1.18c.37,0,.57-.16.57-.45v-.18Z"/>
+                    <polygon class="logo-blue" points="198.76 119.64 198.76 120.64 200.59 120.64 200.59 121.24 198.76 121.24 198.76 122.16 200.81 122.16 200.81 122.75 198.12 122.75 198.12 119.05 200.81 119.05 200.81 119.64 198.76 119.64"/>
+                    <path class="logo-blue" d="M204.7,121.96h-1.7l-.3.8h-.63l1.29-3.71h.97l1.29,3.71h-.63l-.29-.8ZM203.22,121.36h1.26l-.63-1.73-.63,1.73Z"/>
+                    <polygon class="logo-blue" points="209.69 122.16 209.69 122.75 206.95 122.75 206.95 119.05 207.59 119.05 207.59 122.16 209.69 122.16"/>
+                    <polygon class="logo-blue" points="213.89 119.64 213.89 120.64 215.72 120.64 215.72 121.24 213.89 121.24 213.89 122.16 215.94 122.16 215.94 122.75 213.25 122.75 213.25 119.05 215.94 119.05 215.94 119.64 213.89 119.64"/>
+                    <path class="logo-blue" d="M217.21,121.6v-.13h.64v.15c0,.36.42.61,1.02.61.49,0,.9-.19.9-.57,0-.85-2.48-.18-2.48-1.6,0-.56.41-1.09,1.49-1.09s1.54.5,1.54,1.17v.14h-.64v-.14c0-.32-.36-.57-.91-.57-.5,0-.83.19-.83.49,0,.7,2.47.19,2.48,1.6,0,.64-.52,1.17-1.57,1.17s-1.64-.52-1.64-1.23"/>
+                    <polygon class="logo-blue" points="224.75 119.64 223.49 119.64 223.49 122.75 222.85 122.75 222.85 119.64 221.58 119.64 221.58 119.05 224.75 119.05 224.75 119.64"/>
+                    <path class="logo-blue" d="M228,121.96h-1.7l-.3.8h-.63l1.29-3.71h.97l1.29,3.71h-.63l-.29-.8ZM226.53,121.36h1.26l-.63-1.73-.63,1.73Z"/>
+                    <polygon class="logo-blue" points="232.73 119.64 231.47 119.64 231.47 122.75 230.83 122.75 230.83 119.64 229.56 119.64 229.56 119.05 232.73 119.05 232.73 119.64"/>
+                    <polygon class="logo-blue" points="234.68 119.64 234.68 120.64 236.52 120.64 236.52 121.24 234.68 121.24 234.68 122.16 236.74 122.16 236.74 122.75 234.04 122.75 234.04 119.05 236.74 119.05 236.74 119.64 234.68 119.64"/>
+                    <path class="logo-blue" d="M243.45,120.13v.27c0,.67-.46,1.08-1.25,1.08h-1.15v1.28h-.64v-3.71h1.79c.79,0,1.25.41,1.25,1.08M242.81,120.11c0-.29-.19-.46-.57-.46h-1.18v1.23h1.18c.37,0,.57-.17.57-.46v-.31Z"/>
+                    <path class="logo-blue" d="M246.97,121.96h-1.7l-.3.8h-.63l1.29-3.71h.97l1.29,3.71h-.63l-.29-.8ZM245.49,121.36h1.26l-.63-1.73-.63,1.73Z"/>
+                    <path class="logo-blue" d="M251.58,121.24l.68,1.52h-.67l-.67-1.43h-1.06v1.43h-.64v-3.71h1.79c.79,0,1.25.4,1.25,1.07v.14c0,.49-.24.83-.68.98M251.61,120.09c0-.29-.19-.45-.57-.45h-1.18v1.08h1.18c.37,0,.57-.16.57-.45v-.18Z"/>
+                    <polygon class="logo-blue" points="256.62 119.64 255.37 119.64 255.37 122.75 254.72 122.75 254.72 119.64 253.46 119.64 253.46 119.05 256.62 119.05 256.62 119.64"/>
+                    <polygon class="logo-blue" points="260.91 119.05 260.91 122.75 260.28 122.75 258.57 120.19 258.57 122.75 257.94 122.75 257.94 119.05 258.57 119.05 260.28 121.62 260.28 119.05 260.91 119.05"/>
+                    <polygon class="logo-blue" points="263.08 119.64 263.08 120.64 264.91 120.64 264.91 121.24 263.08 121.24 263.08 122.16 265.13 122.16 265.13 122.75 262.43 122.75 262.43 119.05 265.13 119.05 265.13 119.64 263.08 119.64"/>
+                    <path class="logo-blue" d="M268.88,121.24l.68,1.52h-.67l-.67-1.43h-1.06v1.43h-.64v-3.71h1.79c.79,0,1.25.4,1.25,1.07v.14c0,.49-.24.83-.68.98M268.91,120.09c0-.29-.19-.45-.57-.45h-1.18v1.08h1.18c.37,0,.57-.16.57-.45v-.18Z"/>
+                    <path class="logo-blue" d="M270.83,121.6v-.13h.64v.15c0,.36.42.61,1.02.61.49,0,.9-.19.9-.57,0-.85-2.48-.18-2.48-1.6,0-.56.41-1.09,1.49-1.09s1.54.5,1.54,1.17v.14h-.64v-.14c0-.32-.36-.57-.91-.57-.5,0-.83.19-.83.49,0,.7,2.47.19,2.48,1.6,0,.64-.52,1.17-1.57,1.17s-1.64-.52-1.64-1.23"/>
+                    <rect class="logo-dark" x="193.59" y="102.15" width="1.79" height="11.83"/>
+                    <rect class="logo-dark" x="231.58" y="102.15" width="1.79" height="2.87"/>
+                    <path class="logo-dark" d="M231.58,105.55v4.59c0,1.91-1.24,2.36-2.5,2.36s-2.5-.46-2.5-2.36v-.2h-1.79v.53c0,2.59,1.98,3.71,4.29,3.71s4.29-1.12,4.29-3.71v-4.92h-1.79Z"/>
+                    <rect class="logo-dark" x="224.79" y="102.15" width="1.79" height="7.26"/>
+                    <polygon class="logo-dark" points="251.57 113.98 249.78 113.98 249.78 103.74 246.54 103.74 246.54 102.15 251.57 102.15 251.57 113.98"/>
+                    <rect class="logo-dark" x="252.12" y="102.15" width="2.68" height="1.59"/>
+                    <path class="logo-dark" d="M218.31,102.15h-1.14v1.59h.28c1.1,0,1.7.44,1.7,1.61v5.41c0,1.21-.6,1.61-1.7,1.61h-.28v1.61h1.16c1.49,0,2.61-1.17,2.61-2.63v-6.58c0-1.45-1.1-2.63-2.63-2.63"/>
+                    <polygon class="logo-dark" points="216.65 112.37 214.51 112.37 214.51 103.74 216.65 103.74 216.65 102.15 212.73 102.15 212.73 113.98 216.65 113.98 216.65 112.37"/>
+                    <polygon class="logo-dark" points="259.45 103.81 259.46 103.81 259.46 103.74 261.3 103.74 261.3 102.15 257.68 102.15 257.68 113.98 259.45 113.98 259.45 103.81"/>
+                    <path class="logo-dark" d="M263.89,108.85c.98-.37,1.63-1.33,1.63-2.47v-1.61c0-1.45-1.07-2.63-2.52-2.63h-1.17v1.59h.39c1.1,0,1.52.47,1.52,1.45v.77c0,.98-.42,1.45-1.52,1.45h-2.24v1.59h2.08l2.52,4.97h1.94l-2.63-5.13Z"/>
+                    <polygon class="logo-dark" points="274.03 108.87 277.69 102.15 275.69 102.15 273.11 107.11 274.03 108.87"/>
+                    <polygon class="logo-dark" points="269.94 102.15 267.95 102.15 271.93 109.45 271.93 113.98 273.71 113.98 273.71 109.38 269.94 102.15"/>
+                    <polygon class="logo-dark" points="208.74 113.08 208.74 102.15 206.95 102.15 206.95 110.2 208.74 113.08"/>
+                    <polygon class="logo-dark" points="201.91 103.03 201.91 105.83 206.95 113.98 208.68 113.98 201.91 103.03"/>
+                    <polygon class="logo-dark" points="201.38 102.19 201.36 102.15 199.62 102.15 199.62 113.98 201.38 113.98 201.38 102.19"/>
+                    <path class="logo-dark" d="M244.36,110.06c0-1.56-1.03-2.57-2.52-2.75l-2.01-.25c-1.14-.14-1.37-.74-1.37-1.44v-.09h-1.79v.33c0,1.56,1.03,2.71,2.57,2.89l1.93.23c1.23.14,1.4.65,1.4,1.44,0,.18,0,.32,0,.33,0,1.21-.6,1.61-1.7,1.61h-.14v1.61h1.02c1.49,0,2.61-1.17,2.61-2.63,0,0,0-.6,0-1.3"/>
+                    <rect class="logo-dark" x="236.89" y="112.36" width="3.32" height="1.63"/>
+                </svg>
+            </div>
+        </div>
+    </header>
+    <div class="stats-bar">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-value">13,603 SF</div>
+                <div class="stat-label">Building Size</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">1.44 Acres</div>
+                <div class="stat-label">Land Area</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">44</div>
+                <div class="stat-label">Parking Spaces</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">GC</div>
+                <div class="stat-label">Current Zoning</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Important Disclaimer -->
+    <div class="top-disclaimer">
+        <div class="top-disclaimer-content">
+            <div class="top-disclaimer-title">Important Disclaimer</div>
+            <div class="top-disclaimer-text">
+                This document is provided for informational purposes only and does not constitute legal, zoning, or professional advice. Industry Real Estate Partners makes no representations or warranties regarding the accuracy, completeness, or current applicability of the information contained herein.<br><br>
+                <strong>You should not rely on this document</strong> for any zoning, land use, or investment decisions. Zoning regulations, interpretations, and procedures are subject to change and may vary based on specific circumstances.<br><br>
+                For authoritative information, please refer to the <a href="https://library.municode.com/ga/cobb_county/codes/code_of_ordinances" target="_blank">Cobb County Code of Ordinances</a> and consult directly with Cobb County Zoning Division officials at 770-528-2035.
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main">
+
+        <!-- Table of Contents -->
+        <div class="toc">
+            <div class="toc-title">Table of Contents</div>
+            <ul class="toc-list">
+                <li class="toc-item"><span class="toc-number">1</span><a href="#section-1" class="toc-link">Current Zoning Status</a></li>
+                <li class="toc-item"><span class="toc-number">2</span><a href="#section-2" class="toc-link">Grandfathering Rules</a></li>
+                <li class="toc-item"><span class="toc-number">3</span><a href="#section-3" class="toc-link">Future Land Use — NAC Restrictions</a></li>
+                <li class="toc-item"><span class="toc-number">4</span><a href="#section-4" class="toc-link">NRC — Most Flexible Zoning District</a></li>
+                <li class="toc-item"><span class="toc-number">5</span><a href="#section-5" class="toc-link">NRC Highest & Best Uses</a></li>
+                <li class="toc-item"><span class="toc-number">6</span><a href="#section-6" class="toc-link">Prohibited Uses</a></li>
+                <li class="toc-item"><span class="toc-number">7</span><a href="#section-7" class="toc-link">Rezoning Process</a></li>
+                <li class="toc-item"><span class="toc-number">8</span><a href="#section-8" class="toc-link">Cobb County UDC Initiative</a></li>
+            </ul>
+        </div>
+
+        <section class="section" id="section-1">
+            <h2 class="section-title">
+                <span class="section-number">1</span>
+                <span>Current Zoning Status</span>
+            </h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Current Zoning</div>
+                    <div class="info-value">General Commercial (GC)</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Future Land Use</div>
+                    <div class="info-value">NAC (Neighborhood Activity Center)</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Current Use</div>
+                    <div class="info-value">Lawn Equipment & Small Engine Repair</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Zoning Status</div>
+                    <div class="info-value highlight">Grandfathered / Nonconforming</div>
+                </div>
+            </div>
+            <h3 style="font-size: 16px; font-weight: 700; margin: 24px 0 16px;">Building Configuration</h3>
+            <div class="building-card">
+                <div class="building-name">Building A (Front) — <span class="building-size">9,418 RSF</span></div>
+                <div class="building-breakdown">Office (1,714 SF) • Retail/Showroom (4,400 SF) • Warehouse (3,304 SF)</div>
+            </div>
+            <div class="building-card">
+                <div class="building-name">Building B (Back) — <span class="building-size">4,185 RSF</span></div>
+                <div class="building-breakdown">Office (185 SF) • Retail/Showroom (943 SF) • Warehouse (3,052 SF)</div>
+            </div>
+            <div class="key-finding">
+                <div class="key-finding-label">Key Finding</div>
+                <div class="key-finding-text">GC zoning is not compatible with NAC future land use designation. Property operates under grandfathered status tied to existing business license.</div>
+            </div>
+        </section>
+        <section class="section" id="section-2">
+            <h2 class="section-title">
+                <span class="section-number">2</span>
+                <span>Grandfathering Rules</span>
+            </h2>
+            <ul class="rules-list">
+                <li>
+                    <svg class="rule-icon" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    <span class="rule-content"><strong>Vacancy Limit:</strong> 6 months maximum — license must stay active</span>
+                </li>
+                <li>
+                    <svg class="rule-icon" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+                    <span class="rule-content"><strong>Expansion:</strong> Prohibited — cannot add SF beyond current footprint</span>
+                </li>
+                <li>
+                    <svg class="rule-icon" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg>
+                    <span class="rule-content"><strong>Ownership Transfer:</strong> Survives sale if new owner continues licensed use</span>
+                </li>
+                <li>
+                    <svg class="rule-icon" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                    <span class="rule-content"><strong>Similar Use Flexibility:</strong> Small engine repair may extend to similar services</span>
+                </li>
+            </ul>
+            <h3 style="font-size: 16px; font-weight: 700; margin: 28px 0 16px;">Buyer Pathways</h3>
+            <div class="pathway-grid">
+                <div class="pathway-card">
+                    <div class="pathway-text">
+                        <strong>Continue lawn/small engine repair</strong>
+                        <span>No zoning action required</span>
+                    </div>
+                    <span class="risk-badge risk-low">Low Risk</span>
+                </div>
+                <div class="pathway-card">
+                    <div class="pathway-text">
+                        <strong>Similar equipment service</strong>
+                        <span>No zoning action required</span>
+                    </div>
+                    <span class="risk-badge risk-medium">Medium Risk</span>
+                </div>
+                <div class="pathway-card">
+                    <div class="pathway-text">
+                        <strong>Different use entirely</strong>
+                        <span>Rezone to NRC required</span>
+                    </div>
+                    <span class="risk-badge risk-medium">Medium Risk</span>
+                </div>
+            </div>
+        </section>
+        <section class="section" id="section-3">
+            <h2 class="section-title">
+                <span class="section-number">3</span>
+                <span>Future Land Use — NAC Restrictions</span>
+            </h2>
+            <h3 style="font-size: 14px; font-weight: 700; color: var(--slate); margin-bottom: 12px;">NAC-COMPATIBLE ZONING DISTRICTS</h3>
+            <div class="district-grid">
+                <span class="district-tag compatible">SC — Suburban Condominium</span>
+                <span class="district-tag compatible">LRO — Low Rise Office</span>
+                <span class="district-tag compatible">LRC — Low Rise Commercial</span>
+                <span class="district-tag compatible">OS — Office Service*</span>
+                <span class="district-tag recommended">NRC — Neighborhood Retail Commercial</span>
+                <span class="district-tag compatible">RSL — Residential Senior Living</span>
+            </div>
+            <p style="font-size: 13px; color: var(--slate); margin-bottom: 24px;">*Requires Special Exception</p>
+            <h3 style="font-size: 14px; font-weight: 700; color: var(--slate); margin-bottom: 12px;">NON-COMPATIBLE DISTRICTS</h3>
+            <div class="district-grid">
+                <span class="district-tag incompatible">GC — General Commercial (current)</span>
+                <span class="district-tag incompatible">LI — Light Industrial</span>
+                <span class="district-tag incompatible">HI — Heavy Industrial</span>
+            </div>
+        </section>
+        <section class="section" id="section-4">
+            <h2 class="section-title">
+                <span class="section-number">4</span>
+                <span>NRC — Most Flexible Zoning District</span>
+            </h2>
+            <p style="margin-bottom: 24px; color: var(--slate);">Neighborhood Retail Commercial (NRC) provides the broadest range of commercial uses compatible with the NAC overlay.</p>
+            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;">Dimensional Compliance</h3>
+            <table class="compliance-table">
+                <thead>
+                    <tr><th>Requirement</th><th>NRC Standard</th><th>Property</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Min Lot Size</td><td>20,000 SF</td><td>62,726 SF</td><td class="check">✓ Compliant</td></tr>
+                    <tr><td>Max Building Height</td><td>35 ft / 2 stories</td><td>Existing</td><td class="check">✓ Compliant</td></tr>
+                    <tr><td>Max FAR (Office)</td><td>0.50</td><td>0.22</td><td class="check">✓ Compliant</td></tr>
+                    <tr><td>Max FAR (Retail)</td><td>0.25</td><td>0.22</td><td class="check">✓ Compliant</td></tr>
+                </tbody>
+            </table>
+            <h3 style="font-size: 16px; font-weight: 700; margin: 28px 0 16px;">Key Use Limitations</h3>
+            <ul class="rules-list">
+                <li><svg class="rule-icon" viewBox="0 0 24 24" fill="none" stroke="var(--slate)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span class="rule-content">Light auto repair max 8,000 SF (Building B at 4,185 SF is compliant)</span></li>
+                <li><svg class="rule-icon" viewBox="0 0 24 24" fill="none" stroke="var(--slate)" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><span class="rule-content">No outside storage or overnight commercial vehicle parking</span></li>
+                <li><svg class="rule-icon" viewBox="0 0 24 24" fill="none" stroke="var(--slate)" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span class="rule-content">No outside repair (except minor items)</span></li>
+                <li><svg class="rule-icon" viewBox="0 0 24 24" fill="none" stroke="var(--slate)" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg><span class="rule-content">No noxious odors, fumes, or sounds</span></li>
+            </ul>
+            <h3 style="font-size: 16px; font-weight: 700; margin: 28px 0 16px;">Buffer Requirements</h3>
+            <div class="info-grid">
+                <div class="info-item"><div class="info-label">Standard Uses</div><div class="info-value">20-foot landscaped buffer</div></div>
+                <div class="info-item"><div class="info-label">Special Exception Uses</div><div class="info-value">35-foot buffer required</div></div>
+            </div>
+        </section>
+        <section class="section" id="section-5">
+            <h2 class="section-title">
+                <span class="section-number">5</span>
+                <span>NRC Highest & Best Uses</span>
+            </h2>
+            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;">Parking Analysis</h3>
+            <div class="parking-box">
+                <div class="parking-stat"><div class="parking-number">38</div><div class="parking-label">Required</div></div>
+                <div class="parking-stat"><div class="parking-number">44</div><div class="parking-label">Available</div></div>
+                <div class="parking-stat surplus"><div class="parking-number">+6</div><div class="parking-label">Surplus</div></div>
+            </div>
+            <div class="alert-box">
+                <div class="alert-title">Key Insight</div>
+                <div class="alert-text">47% warehouse ratio keeps parking requirement low, maximizing use flexibility.</div>
+            </div>
+            <h3 style="font-size: 16px; font-weight: 700; margin: 28px 0 16px;">Recommended Uses (Ranked)</h3>
+            <div class="use-card"><div class="use-rank">1</div><div class="use-info"><div class="use-name">Equipment Dealer (Sales + Light Service)</div><div class="use-note">Ideal fit for building configuration</div></div><div class="use-rating">★★★★★</div></div>
+            <div class="use-card"><div class="use-rank">2</div><div class="use-info"><div class="use-name">Trade Showroom + Warehouse</div><div class="use-note">Excellent fit for existing layout</div></div><div class="use-rating">★★★★★</div></div>
+            <div class="use-card"><div class="use-rank">3</div><div class="use-info"><div class="use-name">Contractor Headquarters</div><div class="use-note">Excellent fit (may need Special Exception)</div></div><div class="use-rating">★★★★☆</div></div>
+            <div class="use-card"><div class="use-rank">4</div><div class="use-info"><div class="use-name">Light Auto Repair + Parts</div><div class="use-note">Good fit within size limits</div></div><div class="use-rating">★★★★☆</div></div>
+            <div class="use-card"><div class="use-rank">5</div><div class="use-info"><div class="use-name">Vet Clinic + Indoor Boarding</div><div class="use-note">Moderate fit (requires Special Exception)</div></div><div class="use-rating">★★★☆☆</div></div>
+        </section>
+        <section class="section" id="section-6">
+            <h2 class="section-title">
+                <span class="section-number">6</span>
+                <span>Prohibited Uses</span>
+            </h2>
+            <h3 style="font-size: 14px; font-weight: 700; color: var(--slate); margin-bottom: 12px;">EXPLICITLY PROHIBITED IN NRC</h3>
+            <div class="prohibited-grid">
+                <div class="prohibited-item"><span class="prohibited-icon">✕</span> Heavy Auto Repair</div>
+                <div class="prohibited-item"><span class="prohibited-icon">✕</span> Warehouse/Distribution (Primary)</div>
+                <div class="prohibited-item"><span class="prohibited-icon">✕</span> Outside Storage</div>
+                <div class="prohibited-item"><span class="prohibited-icon">✕</span> Fleet Vehicle Staging</div>
+                <div class="prohibited-item"><span class="prohibited-icon">✕</span> Laboratories or Clinics</div>
+                <div class="prohibited-item"><span class="prohibited-icon">✕</span> Uses with Noxious Odors/Fumes</div>
+            </div>
+            <h3 style="font-size: 14px; font-weight: 700; color: var(--slate); margin: 24px 0 12px;">PROHIBITED BY MORATORIUM</h3>
+            <div class="prohibited-item" style="background: #fff3cd; max-width: 400px;"><span class="prohibited-icon" style="color: #856404;">⚠</span> Self-Service Storage Facility — SLUP moratorium since 1998</div>
+            <h3 style="font-size: 14px; font-weight: 700; color: var(--slate); margin: 24px 0 12px;">IMPRACTICAL DUE TO PARKING</h3>
+            <div class="prohibited-grid">
+                <div class="prohibited-item"><span class="prohibited-icon">✕</span> Farm & Garden Supply (136 spaces needed)</div>
+                <div class="prohibited-item"><span class="prohibited-icon">✕</span> Restaurant (136 spaces needed)</div>
+                <div class="prohibited-item"><span class="prohibited-icon">✕</span> Full Retail Conversion (68 spaces needed)</div>
+            </div>
+        </section>
+        <section class="section" id="section-7">
+            <h2 class="section-title">
+                <span class="section-number">7</span>
+                <span>Rezoning Process</span>
+            </h2>
+            <p style="margin-bottom: 24px; color: var(--slate);">Approximately <strong>2 months</strong> from complete filing to Board of Commissioners decision.</p>
+            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 20px;">Process Timeline</h3>
+            <div class="timeline">
+                <div class="timeline-item"><div class="timeline-dot">1</div><div class="timeline-content"><strong>File Complete Application</strong><span>First Thursday of month by 4:00 PM</span></div></div>
+                <div class="timeline-item"><div class="timeline-dot">2</div><div class="timeline-content"><strong>Applicant Meeting with Staff</strong><span>~10 days after filing</span></div></div>
+                <div class="timeline-item"><div class="timeline-dot">3</div><div class="timeline-content"><strong>Mail Notice to Owners within 1,000 ft</strong><span>30 days before PC hearing</span></div></div>
+                <div class="timeline-item"><div class="timeline-dot">4</div><div class="timeline-content"><strong>Proof of Mailing Due</strong><span>21 days before PC hearing</span></div></div>
+                <div class="timeline-item"><div class="timeline-dot">5</div><div class="timeline-content"><strong>Planning Commission Hearing</strong><span>First Tuesday, 2 months after filing</span></div></div>
+                <div class="timeline-item"><div class="timeline-dot">6</div><div class="timeline-content"><strong>Board of Commissioners Hearing</strong><span>Third Tuesday, same month</span></div></div>
+            </div>
+            <div class="fees-box">
+                <div class="fees-title">Application Fees</div>
+                <div class="fee-row"><span>Application Fee (0-20,000 SF commercial)</span><span>$900</span></div>
+                <div class="fee-row"><span>Sign Deposit (refundable)</span><span>$300</span></div>
+                <div class="fee-row"><span>Sign Fee</span><span>$15/sign</span></div>
+                <div class="fee-row total"><span>Total Estimated</span><span>~$1,230</span></div>
+            </div>
+            <div class="alert-box" style="margin-top: 24px;">
+                <div class="alert-title">Important Note</div>
+                <div class="alert-text">Septic approval already complete. No traffic study required (under 50,000 SF threshold).</div>
+            </div>
+        </section>
+        <section class="section" id="section-8">
+            <h2 class="section-title">
+                <span class="section-number">8</span>
+                <span>Changes Ahead: Cobb County UDC Initiative</span>
+            </h2>
+
+            <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px;">What is the Unified Development Code (UDC)?</h3>
+            <p style="margin-bottom: 20px; color: var(--charcoal); line-height: 1.7;">Cobb County is undertaking a comprehensive rewrite of its development regulations through the Unified Development Code (UDC) project. The UDC will consolidate regulations currently scattered across multiple chapters of the County Code—including Chapter 134 (Zoning), Chapter 110 (Subdivision), Chapter 66 (Historic Preservation), and Chapter 58 (Floods)—into a single, integrated, easy-to-use document.</p>
+
+            <div class="alert-box" style="background: #fef9e7; border-left-color: #f4c430; margin-top: 0; margin-bottom: 28px;">
+                <div class="alert-title" style="color: var(--charcoal);">Why This Matters</div>
+                <div class="alert-text" style="color: var(--charcoal);">Cobb County's current zoning ordinance was drafted in the 1970s for a county of approximately 200,000 residents. Today, Cobb County has nearly 800,000 residents. After decades of piecemeal amendments, the regulations are poorly organized, internally inconsistent, and lack features of modern codes. The UDC project aims to modernize these regulations while preserving existing neighborhoods and supporting the County's Comprehensive Plan.</div>
+            </div>
+
+            <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px;">Key Change: Expanded NRC Uses</h3>
+
+            <div class="alert-box" style="margin-top: 0; margin-bottom: 28px;">
+                <div class="alert-title">More Flexibility Coming for NRC Properties</div>
+                <div class="alert-text" style="color: var(--charcoal);">Under the proposed UDC, the <strong>number of permitted uses in the NRC district is expected to expand</strong>. This could provide additional flexibility for properties like 2140 Canton Road, potentially allowing uses that are currently prohibited or require special exception approval. Property owners and buyers should monitor the UDC drafts as they are released to understand how these changes may affect development options.</div>
+            </div>
+
+            <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px;">Project Status</h3>
+
+            <p style="margin-bottom: 12px;"><strong>Installment Two</strong> of the UDC was released in November 2025, including:</p>
+            <ul style="margin-left: 20px; margin-bottom: 20px; color: var(--charcoal);">
+                <li style="margin-bottom: 8px;">Reorganized and restructured zoning districts</li>
+                <li style="margin-bottom: 8px;">Reorganized uses and use regulations</li>
+                <li style="margin-bottom: 8px;">New mixed-use districts</li>
+                <li style="margin-bottom: 8px;">New Planned Development district</li>
+            </ul>
+
+            <p style="margin-bottom: 12px;"><strong>Installment Three</strong> (expected early 2026) will include:</p>
+            <ul style="margin-left: 20px; margin-bottom: 28px; color: var(--charcoal);">
+                <li style="margin-bottom: 8px;">Updated parking standards</li>
+                <li style="margin-bottom: 8px;">Landscaping requirements</li>
+                <li style="margin-bottom: 8px;">Lighting standards</li>
+                <li style="margin-bottom: 8px;">Sign regulations</li>
+                <li style="margin-bottom: 8px;">Enforcement and development standards</li>
+            </ul>
+
+            <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px;">Impact on This Property</h3>
+
+            <p style="margin-bottom: 20px; color: var(--charcoal); line-height: 1.7;">Property owners and prospective buyers of 2140 Canton Road should monitor the following areas as the UDC is finalized:</p>
+
+            <ul class="rules-list">
+                <li><svg class="rule-icon" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span><strong>Parking ratios and requirements</strong> — may affect use flexibility</span></li>
+                <li><svg class="rule-icon" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span><strong>Use definitions and classifications</strong> — could expand permitted uses</span></li>
+                <li><svg class="rule-icon" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span><strong>Buffer and landscaping standards</strong> — may change setback requirements</span></li>
+                <li><svg class="rule-icon" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span><strong>Activity center policies</strong> — could affect NAC overlay requirements</span></li>
+            </ul>
+
+            <h3 style="font-size: 16px; font-weight: 700; margin: 24px 0 16px;">Resources</h3>
+
+            <ul class="resource-list">
+                <li><a href="https://www.cobbcountyudc.com" target="_blank">www.cobbcountyudc.com</a><span>UDC Project Website — View draft documents and project timeline</span></li>
+                <li><a href="https://library.municode.com/ga/cobb_county/codes/code_of_ordinances" target="_blank">Municode Library — Chapter 134</a><span>Current Zoning Code</span></li>
+                <li><a href="tel:770-528-2035">770-528-2035</a><span>Cobb County Zoning Division</span></li>
+            </ul>
+        </section>
+    </main>
+
+    <!-- Prepared By -->
+    <div class="prepared-by">
+        <div class="prepared-box">
+            <div class="prepared-info">
+                <div class="prepared-name">Matt Parisi</div>
+                <div class="prepared-title">Commercial Real Estate Broker</div>
+            </div>
+            <div class="prepared-firm">Industry Real Estate Partners</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-logo">Industry Real Estate Partners</div>
+        <div class="footer-prepared">Prepared by Matt Parisi | January 2026</div>
+    </footer>
+</body>
+</html>
